@@ -1,0 +1,7 @@
+{
+  "name": "survey-clean-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Leonardo Albuquerque <leeodesign@hotmail.com>",
+  "license": "MIT"
+}
