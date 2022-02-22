@@ -3,5 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "author": "Leonardo Albuquerque <leeodesign@hotmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "git-commit-msg-linter": "^4.1.0"
+  }
 }
