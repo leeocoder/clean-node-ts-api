@@ -7,7 +7,7 @@ const makeSut = (): AccountMongoRepository => {
 
 describe('Account Mongo Repository', () => {
   beforeAll(async () => {
-    return await MongoHelper.connect(process.env.MONGO_URL)
+    return await MongoHelper.connect(process.env.MONGO_URL ?? '')
   })
   afterAll(async () => {
     await MongoHelper.disconnect()
@@ -24,7 +24,6 @@ describe('Account Mongo Repository', () => {
       email: 'any_email@mail.com',
       password: 'any_password'
     })
-    console.log('Account -> ', account)
     expect(account).toBeTruthy()
     expect(account.id).toBeTruthy()
     expect(account.name).toBe('any_name')
