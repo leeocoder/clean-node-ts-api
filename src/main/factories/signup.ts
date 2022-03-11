@@ -7,7 +7,7 @@ import { Controller } from '../../presentation/protocols'
 import { LogControllerDecorator } from '../decorators/log'
 
 class LogErrorRepository implements LogErrorRepository {
-  async log (): Promise<void> {
+  async logError (): Promise<void> {
 
   }
 }
