@@ -1,6 +1,6 @@
 {
   "name": "survey-clean-api",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "./src/main/server.ts",
   "author": "Leonardo Albuquerque <leeodesign@hotmail.com>",
   "license": "MIT",
