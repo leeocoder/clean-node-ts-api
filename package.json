@@ -1,7 +1,7 @@
 {
   "name": "survey-clean-api",
   "version": "1.1.0",
-  "main": "./src/main/server.ts",
+  "main": "dist/main/server.ts",
   "author": "Leonardo Albuquerque <leeodesign@hotmail.com>",
   "license": "MIT",
   "scripts": {
@@ -13,7 +13,7 @@
     "test:verbose": "yarn test --watch --runInBand",
     "test:staged": "yarn test --findRelatedTests",
     "test:ci": "yarn test --coverage",
-    "dev": "sucrase-node ."
+    "up": "npm run build && docker-compose up"
   },
   "keywords": [],
   "devDependencies": {
@@ -34,7 +34,6 @@
     "@types/supertest": "^2.0.11",
     "@types/validator": "^13.7.1",
     "rimraf": "^3.0.2",
-    "sucrase": "^3.20.3",
     "supertest": "^6.2.2",
     "@types/bcrypt": "^5.0.0"
   },

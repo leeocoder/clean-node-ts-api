@@ -1,0 +1,21 @@
+version: '3.7'
+services:
+  mongo:
+    container_name: mongo_container
+    image: mongo
+    restart: always
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27017:27017"
+  api:
+    build: .
+    container_name: survey_clean_api
+    restart: always
+    command: npm start
+    volumes:
+      - ./dist:/usr/src/survey-clean-api/dist
+    ports:
+      - "3000:3000"
+    links:
+      - mongo
