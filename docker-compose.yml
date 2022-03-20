@@ -12,7 +12,7 @@ services:
     build: .
     container_name: survey_clean_api
     restart: always
-    command: npm run debug
+    command: npm run start
     volumes:
       - ./dist:/usr/src/survey-clean-api/dist
       - ./package.json:/usr/src/survey-clean-api/package.json

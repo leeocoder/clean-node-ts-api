@@ -4,6 +4,7 @@
     "module": "commonJS",
     "target": "ES2021",
     "esModuleInterop": true,
+    "sourceMap": true,
     "strict": true,
   },
   "include": [
