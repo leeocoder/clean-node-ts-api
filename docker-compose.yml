@@ -9,10 +9,11 @@ services:
     ports:
       - "27017:27017"
   api:
-    build: .
+    image: node:16
+    working_dir: /usr/src/survey-clean-api
     container_name: survey_clean_api
     restart: always
-    command: npm run start
+    command: bash -c "npm install --only=prod && npm start"
     volumes:
       - ./dist:/usr/src/survey-clean-api/dist
       - ./package.json:/usr/src/survey-clean-api/package.json
