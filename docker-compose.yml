@@ -12,9 +12,10 @@ services:
     build: .
     container_name: survey_clean_api
     restart: always
-    command: npm start
+    command: npm run debug
     volumes:
       - ./dist:/usr/src/survey-clean-api/dist
+      - ./package.json:/usr/src/survey-clean-api/package.json
     ports:
       - "3000:3000"
     links:

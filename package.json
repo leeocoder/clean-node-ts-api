@@ -6,6 +6,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node dist/main/server.js",
+    "debug": "node --inspect=0.0.0.0:9222 --nolazy dist/main/server.js",
     "build": "rimraf dist && tsc",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:unit": "yarn test --watch -c jest-unit-config.js",
@@ -13,7 +14,8 @@
     "test:verbose": "yarn test --watch --runInBand",
     "test:staged": "yarn test --findRelatedTests",
     "test:ci": "yarn test --coverage",
-    "up": "npm run build && docker-compose up"
+    "up": "npm run build && docker-compose up -d",
+    "down": "docker-compose down"
   },
   "keywords": [],
   "devDependencies": {
