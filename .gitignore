@@ -6,3 +6,4 @@ globalConfig.json
 !src/data
 data/
 .vscode/
+globalConfig.json
