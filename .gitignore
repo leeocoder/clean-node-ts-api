@@ -3,5 +3,6 @@ dist/
 .husky
 coverage/
 globalConfig.json
+!src/data
 data/
 .vscode/
