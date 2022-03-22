@@ -1,6 +1,9 @@
-node_modules
-dist
+node_modules/
+dist/
 .husky
-coverage
-./data
-.vscode
+coverage/
+globalConfig.json
+data/
+!/src/data
+.vscode/
+globalConfig.json
