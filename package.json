@@ -14,7 +14,7 @@
     "test:verbose": "yarn test --watch --runInBand",
     "test:staged": "yarn test --findRelatedTests",
     "test:ci": "yarn test --coverage",
-    "up": "npm run build && docker-compose up",
+    "up": "yarn build && docker-compose up",
     "down": "docker-compose down"
   },
   "keywords": [],

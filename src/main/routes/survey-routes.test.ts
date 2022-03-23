@@ -39,11 +39,10 @@ describe('Survey Router', () => {
         .expect(403)
     })
     test('Should return 403 on add survey with valid token', async () => {
-      const accountId = await accountCollection.insertOne({ name: 'Ricardo Albuquerque', email: 'ricalb@mail.com', password: '123', role: 'admin' })
+      const accountId = await accountCollection.insertOne({ name: 'Leonardo Albuquerque', email: 'ricalb@mail.com', password: '123', role: 'admin' })
       const account = await accountCollection.findOne({ _id: accountId.insertedId })
-      console.log('id: ', account?._id)
       const accessToken = sign({ id: account?._id }, env.jwtSecret)
-      await accountCollection.updateOne({ _id: accountId }, { $set: { accessToken } })
+      await accountCollection.updateOne({ _id: accountId.insertedId }, { $set: { accessToken } })
       const survey: AddSurveyModel = {
         question: 'any_question',
         answers: [{
@@ -55,7 +54,7 @@ describe('Survey Router', () => {
         .post('/api/surveys')
         .set('x-access-token', accessToken)
         .send(survey)
-        .expect(403)
+        .expect(204)
     })
   })
 })
