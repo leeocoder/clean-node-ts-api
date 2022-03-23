@@ -71,4 +71,10 @@ test('Should return an account on success', async () => {
   const account = await sut.load('any_token', 'any_role')
   expect(account).toEqual(makeFakeAccount())
 })
+test('Should throw if LoadAccountByTokenRepository throw', async () => {
+  const { sut, loadAccountByTokenRepositoryStub } = makeSut()
+  jest.spyOn(loadAccountByTokenRepositoryStub, 'loadByToken').mockReturnValueOnce(Promise.reject(new Error()))
+  const promise = sut.load('any_token', 'any_role')
+  await expect(promise).rejects.toThrow()
+})
 })
