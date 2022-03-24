@@ -1,4 +1,5 @@
-import { serverError } from '../../../helpers/http/http-helper'
+import { noContent } from './../../../helpers/http/http-helper'
+import { ok, serverError } from '../../../helpers/http/http-helper'
 import { Controller, HttpRequest, HttpResponse, LoadSurveys } from './load-surveys-controller-protocols'
 
 export class LoadSurveysController implements Controller {
@@ -6,10 +7,7 @@ export class LoadSurveysController implements Controller {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const surveys = await this.loadSurveys.load()
-      return {
-        statusCode: 200,
-        body: surveys
-      }
+      return surveys.length ? ok(surveys) : noContent()
     } catch (error: any) {
       return serverError(error)
     }
