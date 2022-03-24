@@ -15,7 +15,8 @@
     "test:staged": "yarn test --findRelatedTests",
     "test:ci": "yarn test --coverage",
     "up": "yarn build && docker-compose up",
-    "down": "docker-compose down"
+    "down": "docker-compose down",
+    "test:coveralls": "npm run test:ci && coveralls < coverage/lcov.info"
   },
   "keywords": [],
   "devDependencies": {
@@ -28,6 +29,7 @@
     "@types/node": "^17.0.21",
     "@types/supertest": "^2.0.11",
     "@types/validator": "^13.7.1",
+    "coveralls": "^3.1.1",
     "eslint-config-standard-with-typescript": "^21.0.1",
     "git-commit-msg-linter": "^4.1.1",
     "husky": "^7.0.4",
