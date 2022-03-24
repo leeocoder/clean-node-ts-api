@@ -5,15 +5,18 @@ import { MongoHelper } from '../../infra/db/mongodb/helpers/mongo-helper'
 import { Collection } from 'mongodb'
 import { sign } from 'jsonwebtoken'
 import env from '../config/env'
+import mockDate from 'mockdate'
 
 let surveyCollection: Collection
 let accountCollection: Collection
 
 describe('Survey Router', () => {
   beforeAll(async () => {
+    mockDate.set(new Date())
     return await MongoHelper.connect(process.env.MONGO_URL ?? '')
   })
   afterAll(async () => {
+    mockDate.reset()
     await MongoHelper.disconnect()
   })
 
@@ -31,7 +34,8 @@ describe('Survey Router', () => {
         answers: [{
           image: 'any_image',
           answer: 'http://imagem.com/this-is-a-image.png'
-        }]
+        }],
+        created_at: new Date()
       }
       await request(app)
         .post('/api/surveys')
@@ -48,7 +52,8 @@ describe('Survey Router', () => {
         answers: [{
           image: 'any_image',
           answer: 'http://imagem.com/this-is-a-image.png'
-        }]
+        }],
+        created_at: new Date()
       }
       await request(app)
         .post('/api/surveys')

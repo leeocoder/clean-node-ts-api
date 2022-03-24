@@ -13,7 +13,7 @@ export class AddSurveyController implements Controller {
       const error = this.validation.validate(httpRequest.body)
       if (error) return badRequest(error)
       const { question, answers } = httpRequest.body
-      await this.addSurvey.add({ question, answers })
+      await this.addSurvey.add({ question, answers, created_at: new Date() })
       return noContent()
     } catch (error: any) {
       return serverError(error)
