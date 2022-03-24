@@ -3,10 +3,10 @@ import { Controller, HttpRequest, HttpResponse, LoadSurveys } from './load-surve
 export class LoadSurveysController implements Controller {
   constructor (private readonly loadSurveys: LoadSurveys) {}
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    await this.loadSurveys.load()
+    const surveys = await this.loadSurveys.load()
     return {
       statusCode: 200,
-      body: {}
+      body: surveys
     }
   }
 }
