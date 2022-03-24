@@ -1,6 +1,7 @@
 import { SurveyModel } from './../../../domain/models/survey';
 import { LoadSurveysRepository } from '../../protocols/db/survey/load-surveys-repository'
 import { DbLoadSurveys } from './db-load-surveys'
+import mockDate from 'mockdate'
 const makeFakeSurveys = (): SurveyModel[] => {
   const fakeSurveys: SurveyModel[] = [{
     id: 'any_id',
@@ -25,7 +26,7 @@ const makeFakeSurveys = (): SurveyModel[] => {
 const makeLoadSurveysRepositoryStub = (): LoadSurveysRepository => {
 
   class LoadSurveysRepositoryStub implements LoadSurveysRepository {
-    async loadAll (): Promise<SurveyModel[] | null> {
+    async loadAll (): Promise<SurveyModel[]> {
       return Promise.resolve(makeFakeSurveys())
     }
   }
@@ -45,11 +46,18 @@ const makeSut = (): SutTypes => {
 }
 
 describe('DbLoadSurveys', () => {
+  beforeAll(()=> { mockDate.set(new Date())  })
+  afterAll(()=> { mockDate.reset()  })
 test('Should call LoadSurveysRepository', async () => {
   const { sut, loadSurveysRepositoryStub } = makeSut()
   const loadAllSpy = jest.spyOn(loadSurveysRepositoryStub, 'loadAll')
   await sut.load()
   expect(loadAllSpy).toBeCalled()
+})
+test('Should return a list of Surveys on success', async () => {
+  const { sut } = makeSut()
+  const surveys = await sut.load()
+  expect(surveys).toEqual(makeFakeSurveys())
 })
 test('Should throw if LoadSurveysRepository throw', async () => {
   const { sut, loadSurveysRepositoryStub } = makeSut()
