@@ -42,7 +42,7 @@ describe('Survey Router', () => {
         .send(survey)
         .expect(403)
     })
-    test('Should return 403 on add survey with valid token', async () => {
+    test('Should return 204 on add survey with valid token', async () => {
       const accountId = await accountCollection.insertOne({ name: 'Leonardo Albuquerque', email: 'ricalb@mail.com', password: '123', role: 'admin' })
       const account = await accountCollection.findOne({ _id: accountId.insertedId })
       const accessToken = sign({ id: account?._id }, env.jwtSecret)
@@ -67,6 +67,16 @@ describe('Survey Router', () => {
       await request(app)
         .get('/api/surveys')
         .expect(403)
+    })
+    test('Should return 204 on load surveys with valid access token and there are no data in database', async () => {
+      const accountId = await accountCollection.insertOne({ name: 'Leonardo Albuquerque', email: 'ricalb@mail.com', password: '123' })
+      const account = await accountCollection.findOne({ _id: accountId.insertedId })
+      const accessToken = sign({ id: account?._id }, env.jwtSecret)
+      await accountCollection.updateOne({ _id: accountId.insertedId }, { $set: { accessToken } })
+      await request(app)
+        .get('/api/surveys')
+        .set('x-access-token', accessToken)
+        .expect(204)
     })
   })
 })
