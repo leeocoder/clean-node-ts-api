@@ -78,6 +78,25 @@ describe('Survey Router', () => {
         .set('x-access-token', accessToken)
         .expect(204)
     })
+    test('Should return 200 on load surveys with valid access token', async () => {
+      const accountId = await accountCollection.insertOne({ name: 'Leonardo Albuquerque', email: 'ricalb@mail.com', password: '123' })
+      const survey: AddSurveyModel = {
+        question: 'any_question',
+        answers: [{
+          image: 'any_image',
+          answer: 'http://imagem.com/this-is-a-image.png'
+        }],
+        created_at: new Date()
+      }
+      await surveyCollection.insertOne(survey)
+      const account = await accountCollection.findOne({ _id: accountId.insertedId })
+      const accessToken = sign({ id: account?._id }, env.jwtSecret)
+      await accountCollection.updateOne({ _id: accountId.insertedId }, { $set: { accessToken } })
+      await request(app)
+        .get('/api/surveys')
+        .set('x-access-token', accessToken)
+        .expect(200)
+    })
   })
 })
 
