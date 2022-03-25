@@ -10,6 +10,31 @@ import mockDate from 'mockdate'
 let surveyCollection: Collection
 let accountCollection: Collection
 
+const makeAccessToken = async (): Promise<string> => {
+  const accountId = await accountCollection.insertOne({ name: 'Leonardo Albuquerque', email: 'ricalb@mail.com', password: '123', role: 'admin' })
+  const account = await accountCollection.findOne({ _id: accountId.insertedId })
+  const accessToken = sign({ id: account?._id }, env.jwtSecret)
+  await accountCollection.updateOne({ _id: accountId.insertedId }, { $set: { accessToken } })
+
+  return await Promise.resolve(accessToken)
+}
+
+const makeFakeSurvey = (): AddSurveyModel => {
+  const survey: AddSurveyModel = {
+    question: 'any_question',
+    answers: [{
+      image: 'any_image',
+      answer: 'http://imagem.com/this-is-a-image.png'
+    }],
+    created_at: new Date()
+  }
+
+  return survey
+}
+const makeInsertSurvey = async (): Promise<void> => {
+  await surveyCollection.insertOne(makeFakeSurvey())
+}
+
 describe('Survey Router', () => {
   beforeAll(async () => {
     mockDate.set(new Date())
@@ -29,36 +54,17 @@ describe('Survey Router', () => {
   })
   describe('POST /surveys', () => {
     test('Should return 403 on add survey without accessToken', async () => {
-      const survey: AddSurveyModel = {
-        question: 'any_question',
-        answers: [{
-          image: 'any_image',
-          answer: 'http://imagem.com/this-is-a-image.png'
-        }],
-        created_at: new Date()
-      }
       await request(app)
         .post('/api/surveys')
-        .send(survey)
+        .send(makeFakeSurvey())
         .expect(403)
     })
     test('Should return 204 on add survey with valid token', async () => {
-      const accountId = await accountCollection.insertOne({ name: 'Leonardo Albuquerque', email: 'ricalb@mail.com', password: '123', role: 'admin' })
-      const account = await accountCollection.findOne({ _id: accountId.insertedId })
-      const accessToken = sign({ id: account?._id }, env.jwtSecret)
-      await accountCollection.updateOne({ _id: accountId.insertedId }, { $set: { accessToken } })
-      const survey: AddSurveyModel = {
-        question: 'any_question',
-        answers: [{
-          image: 'any_image',
-          answer: 'http://imagem.com/this-is-a-image.png'
-        }],
-        created_at: new Date()
-      }
+      const accessToken = await makeAccessToken()
       await request(app)
         .post('/api/surveys')
         .set('x-access-token', accessToken)
-        .send(survey)
+        .send(makeFakeSurvey())
         .expect(204)
     })
   })
@@ -69,29 +75,15 @@ describe('Survey Router', () => {
         .expect(403)
     })
     test('Should return 204 on load surveys with valid access token and there are no data in database', async () => {
-      const accountId = await accountCollection.insertOne({ name: 'Leonardo Albuquerque', email: 'ricalb@mail.com', password: '123' })
-      const account = await accountCollection.findOne({ _id: accountId.insertedId })
-      const accessToken = sign({ id: account?._id }, env.jwtSecret)
-      await accountCollection.updateOne({ _id: accountId.insertedId }, { $set: { accessToken } })
+      const accessToken = await makeAccessToken()
       await request(app)
         .get('/api/surveys')
         .set('x-access-token', accessToken)
         .expect(204)
     })
     test('Should return 200 on load surveys with valid access token', async () => {
-      const accountId = await accountCollection.insertOne({ name: 'Leonardo Albuquerque', email: 'ricalb@mail.com', password: '123' })
-      const survey: AddSurveyModel = {
-        question: 'any_question',
-        answers: [{
-          image: 'any_image',
-          answer: 'http://imagem.com/this-is-a-image.png'
-        }],
-        created_at: new Date()
-      }
-      await surveyCollection.insertOne(survey)
-      const account = await accountCollection.findOne({ _id: accountId.insertedId })
-      const accessToken = sign({ id: account?._id }, env.jwtSecret)
-      await accountCollection.updateOne({ _id: accountId.insertedId }, { $set: { accessToken } })
+      await makeInsertSurvey()
+      const accessToken = await makeAccessToken()
       await request(app)
         .get('/api/surveys')
         .set('x-access-token', accessToken)
