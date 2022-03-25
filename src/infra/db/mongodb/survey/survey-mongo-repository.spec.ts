@@ -1,9 +1,25 @@
+import { AddSurveyModel } from './../../../../domain/usecases/add-survey'
+// import { SurveyModel } from './../../../../domain/models/survey'
 import { Collection } from 'mongodb'
 import { MongoHelper } from '../helpers/mongo-helper'
 import { SurveyMongoRepository } from './survey-mongo-repository'
 import mockDate from 'mockdate'
 
 let surveyCollection: Collection
+
+const makeFakeSurvey = (): AddSurveyModel => {
+  return {
+    question: 'any_question',
+    answers: [{
+      image: 'any_image',
+      answer: 'any_answer'
+    },
+    {
+      answer: 'other_answer'
+    }],
+    created_at: new Date()
+  }
+}
 
 const makeSut = (): SurveyMongoRepository => {
   return new SurveyMongoRepository()
@@ -27,44 +43,18 @@ describe('Survey Mongo Repository', () => {
   describe('add()', () => {
     test('Should add a survey on success', async () => {
       const sut = makeSut()
-      await sut.add({
-        question: 'any_question',
-        answers: [{
-          image: 'any_image',
-          answer: 'any_answer'
-        },
-        {
-          answer: 'other_answer'
-        }],
-        created_at: new Date()
-      })
+      await sut.add(makeFakeSurvey())
       const survey = await surveyCollection.findOne({ question: 'any_question' })
       expect(survey).toBeTruthy()
     })
   })
   describe('loadAll()', () => {
     test('Should load all a surveys on success', async () => {
-      await surveyCollection.insertMany([{
-        question: 'any_question',
-        answers: [{
-          image: 'any_image',
-          answer: 'any_answer'
-        }],
-        created_at: new Date()
-      }, {
-        question: 'other_question',
-        answers: [{
-          image: 'other_image',
-          answer: 'other_answer'
-        }],
-        created_at: new Date()
-      }])
+      await surveyCollection.insertMany([makeFakeSurvey()])
       const sut = makeSut()
       const surveys = await sut.loadAll()
-      expect(surveys.length).toBe(2)
-      surveys.map(survey => console.log(survey))
+      expect(surveys.length).toBe(1)
       expect(surveys[0]?.question).toBe('any_question')
-      expect(surveys[1]?.question).toBe('other_question')
     })
     test('Should load all empty list', async () => {
       const sut = makeSut()
