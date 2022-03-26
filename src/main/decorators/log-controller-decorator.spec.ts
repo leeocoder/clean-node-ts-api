@@ -44,13 +44,13 @@ const makeController = (): Controller => {
   }
   return new ControllerStub()
 }
-interface sutTypes {
+type SutTypes = {
   sut: LogControllerDecorator
   controllerStub: Controller
   logErrorRepositoryStub: LogErrorRepository
 }
 
-const makeSut = (): sutTypes => {
+const makeSut = (): SutTypes => {
   const logErrorRepositoryStub = makeLogErrorRepositoryStub()
   const controllerStub = makeController()
   const sut = new LogControllerDecorator(controllerStub, logErrorRepositoryStub)

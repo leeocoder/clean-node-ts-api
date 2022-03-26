@@ -11,7 +11,7 @@ const makeFakeSurveyData = (): AddSurveyModel => ({
   created_at: new Date()
 })
 
-interface sutTypes {
+type SutTypes = {
   sut: DbAddSurvey
   addSurveyRepositoryStub: AddSurveyRepository
 }
@@ -26,7 +26,7 @@ const makeAddSurveyRepositoryStub = (): AddSurveyRepository => {
   return new AddSurveyRepositoryStub()
 }
 
-const makeSut = (): sutTypes => {
+const makeSut = (): SutTypes => {
   const addSurveyRepositoryStub = makeAddSurveyRepositoryStub()
   const sut = new DbAddSurvey(addSurveyRepositoryStub)
   return { sut, addSurveyRepositoryStub }

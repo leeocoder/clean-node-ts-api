@@ -3,7 +3,7 @@ import { Authentication, AuthenticationModel, HttpRequest, Validation } from './
 import { MissingParamError } from '@/presentation/errors'
 import { badRequest, ok, serverError, unauthorized } from '@/presentation/helpers/http/http-helper'
 
-interface sutTypes {
+type SutTypes = {
   sut: LoginController
   authenticationStub: Authentication
   validationStub: Validation
@@ -25,7 +25,7 @@ const makeAuthentication = (): Authentication => {
   }
   return new AuthenticationStub()
 }
-const makeSut = (): sutTypes => {
+const makeSut = (): SutTypes => {
   const authenticationStub = makeAuthentication()
   const validationStub = makeValidation()
   const sut = new LoginController(authenticationStub, validationStub)

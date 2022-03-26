@@ -2,7 +2,7 @@
 import { AccountModel, AddAccountModel, AddAccountRepository, Hasher, LoadAccountByEmailRepository } from './db-add-account-protocols'
 import { DbAddAccount } from './db-add-account'
 
-interface sutTypes {
+type SutTypes = {
   sut: DbAddAccount
   hasherStub: Hasher
   addAccountRepositoryStub: AddAccountRepository
@@ -42,7 +42,7 @@ const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
   return new LoadAccountByEmailRepositoryStub()
 }
 
-const makeSut = (): sutTypes => {
+const makeSut = (): SutTypes => {
   const addAccountRepositoryStub = makeAddAccountRepository()
   const hasherStub = makeHasher()
   const loadAccountByEmailRepositoryStub = makeLoadAccountByEmailRepository()
