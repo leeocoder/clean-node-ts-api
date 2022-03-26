@@ -10,12 +10,12 @@ jest.mock('bcrypt', () => ({
   }
 }))
 
-interface sutTypes {
+type SutTypes = {
   sut: BcryptAdapter
   salt: number
 }
 
-const makeSut = (): sutTypes => {
+const makeSut = (): SutTypes => {
   const salt = 12
   const sut = new BcryptAdapter(salt)
   return { sut, salt }
