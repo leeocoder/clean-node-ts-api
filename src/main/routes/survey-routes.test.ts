@@ -1,11 +1,11 @@
-import { AddSurveyModel } from './../../domain/usecases/add-survey'
 import { app } from '../config/app'
-import request from 'supertest'
-import { MongoHelper } from '../../infra/db/mongodb/helpers/mongo-helper'
-import { Collection } from 'mongodb'
-import { sign } from 'jsonwebtoken'
 import env from '../config/env'
+import { AddSurveyModel } from '@/domain/usecases/add-survey'
+import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
+import { sign } from 'jsonwebtoken'
 import mockDate from 'mockdate'
+import { Collection } from 'mongodb'
+import request from 'supertest'
 
 let surveyCollection: Collection
 let accountCollection: Collection
