@@ -7,7 +7,7 @@ export const adaptMiddleware = (middleware: Middleware): any => {
       headers: request.headers
     }
     const httpResponse = await middleware.handle(httpRequest)
-    if (Number(httpResponse.statusCode) === 200) {
+    if (httpResponse.statusCode >= 200 && httpResponse.statusCode <= 299) {
       Object.assign(request, httpResponse.body)
       next()
     } else {

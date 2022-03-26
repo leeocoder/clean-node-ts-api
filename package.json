@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "start": "nodemon -L --watch ./dist ./dist/main/server.js",
-    "debug": "node --inspect=0.0.0.0:9222 --nolazy dist/main/server.js",
+    "debug": "nodemon -L --watch ./dist --inspect=0.0.0.0:9222 --nolazy ./dist/main/server.js",
     "build": "rimraf dist && tsc -p tsconfig-build.json",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:unit": "yarn test --watch -c jest-unit-config.js",
