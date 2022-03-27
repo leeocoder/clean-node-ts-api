@@ -52,6 +52,7 @@ describe('Survey Mongo Repository', () => {
       const surveys = await sut.loadAll()
       expect(surveys.length).toBe(1)
       expect(surveys[0]?.question).toBe('any_question')
+      expect(surveys[0]?.id).toBeTruthy()
     })
     test('Should load all empty list', async () => {
       const sut = makeSut()
@@ -65,6 +66,7 @@ describe('Survey Mongo Repository', () => {
       const sut = makeSut()
       const survey = await sut.loadById(String(account.insertedId))
       expect(survey).toBeTruthy()
+      expect(survey.id).toBeTruthy()
     })
   })
 })
