@@ -10,7 +10,7 @@ const makeFakeSurveyResultData = (): Omit<SurveyResultModel, 'id'> => ({
 })
 
 const makeFakeSurveyResult = (): SurveyResultModel => Object.assign({}, makeFakeSurveyResultData(), {
-  id: 'any_question'
+  id: 'any_id'
 }, )
 
 type SutTypes = {
@@ -43,10 +43,16 @@ describe('DbSaveSurveyResult UseCase', () => {
     await sut.save(makeFakeSurveyResultData())
     expect(saveSpy).toHaveBeenCalledWith(makeFakeSurveyResultData())
   })
+  test('Should return a Survey Result on success', async () => {
+    const { sut } = makeSut()
+    const survey = await sut.save(makeFakeSurveyResultData())
+    expect(survey).toEqual(makeFakeSurveyResult())
+  })
   test('Should throw if saveSurveyResultRepository throw', async () => {
     const { sut, saveSurveyResultRepositoryStub } = makeSut()
     jest.spyOn(saveSurveyResultRepositoryStub, 'save').mockImplementationOnce(() => { throw new Error() })
     const promise = sut.save(makeFakeSurveyResultData())
     await expect(promise).rejects.toThrow()
   })
+
 })
