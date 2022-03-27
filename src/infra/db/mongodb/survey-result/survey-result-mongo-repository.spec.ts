@@ -61,7 +61,7 @@ describe('Survey Mongo Repository', () => {
   })
 
   describe('save()', () => {
-    test('Should add a survey result if it\'s new ', async () => {
+    test('Should add a survey result if it\'s new', async () => {
       const sut = makeSut()
       const survey = await makeInsertSurvey()
       const account = await makeInsertAccount()
@@ -75,6 +75,22 @@ describe('Survey Mongo Repository', () => {
       expect(surveyResult).toBeTruthy()
       expect(surveyResult.id).toBeTruthy()
       expect(surveyResult.answer).toBe(survey.answers[0].answer)
+    })
+    test('Should update a survey result if already exists', async () => {
+      const sut = makeSut()
+      const survey = await makeInsertSurvey()
+      const account = await makeInsertAccount()
+      const newResultSurvey = (): SaveSurveyResultModel => ({
+        survey_id: survey.id,
+        account_id: account.id,
+        answer: survey.answers[0].answer,
+        created_at: new Date()
+      })
+      const insertedSurveyResult = await surveyResultCollection.insertOne(newResultSurvey())
+      const surveyResult = await sut.save(Object.assign({}, newResultSurvey(), { answer: 'updated_answer' }))
+      expect(surveyResult).toBeTruthy()
+      expect(surveyResult.id).toEqual(String(insertedSurveyResult.insertedId))
+      expect(surveyResult.answer).toBe('updated_answer')
     })
   })
 })
