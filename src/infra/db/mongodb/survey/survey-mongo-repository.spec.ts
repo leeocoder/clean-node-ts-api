@@ -61,4 +61,12 @@ describe('Survey Mongo Repository', () => {
       expect(surveys.length).toBe(0)
     })
   })
+  describe('loadById()', () => {
+    test('Should load survey by on success', async () => {
+      const account = await surveyCollection.insertOne(makeFakeSurvey())
+      const sut = makeSut()
+      const survey = await sut.loadById(String(account.insertedId))
+      expect(survey).toBeTruthy()
+    })
+  })
 })
