@@ -6,19 +6,17 @@ import mockDate from 'mockdate'
 
 let surveyCollection: Collection
 
-const makeFakeSurvey = (): AddSurveyModel => {
-  return {
-    question: 'any_question',
-    answers: [{
-      image: 'any_image',
-      answer: 'any_answer'
-    },
-    {
-      answer: 'other_answer'
-    }],
-    created_at: new Date()
-  }
-}
+const makeFakeSurvey = (): AddSurveyModel => ({
+  question: 'any_question',
+  answers: [{
+    image: 'any_image',
+    answer: 'any_answer'
+  },
+  {
+    answer: 'other_answer'
+  }],
+  created_at: new Date()
+})
 
 const makeSut = (): SurveyMongoRepository => {
   return new SurveyMongoRepository()
