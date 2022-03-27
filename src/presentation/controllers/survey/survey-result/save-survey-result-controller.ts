@@ -5,6 +5,7 @@ export class SaveSurveyResultController implements Controller {
   constructor (private readonly loadSurveyById: LoadSurveyById, private readonly saveSurveyResult: SaveSurveyResult) {}
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
+      if (httpRequest.test) console.log(httpRequest.test)
       const { surveyId } = httpRequest.params
       const { answer } = httpRequest.body
       const { accountId } = httpRequest
