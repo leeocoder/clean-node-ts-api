@@ -1,6 +1,6 @@
 import { app } from '../config/app'
 import env from '../config/env'
-import { AddSurveyModel } from '@/domain/usecases/survey/add-survey'
+import { AddSurveyParams } from '@/domain/usecases/survey/add-survey'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 import { sign } from 'jsonwebtoken'
 import mockDate from 'mockdate'
@@ -19,8 +19,8 @@ const makeAccessToken = async (): Promise<string> => {
   return await Promise.resolve(accessToken)
 }
 
-const makeFakeSurvey = (): AddSurveyModel => {
-  const survey: AddSurveyModel = {
+const makeFakeSurvey = (): AddSurveyParams => {
+  const survey: AddSurveyParams = {
     question: 'any_question',
     answers: [{
       image: 'http://imagem.com/this-is-a-image.png',

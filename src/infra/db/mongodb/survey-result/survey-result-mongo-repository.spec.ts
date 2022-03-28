@@ -1,5 +1,5 @@
 import { SurveyResultMongoRepository } from './survey-result-mongo-repository'
-import { SaveSurveyResultModel } from '@/domain/usecases/survey-result/save-survey-result'
+import { SaveSurveyResultParams } from '@/domain/usecases/survey-result/save-survey-result'
 import { MongoHelper } from '../helpers/mongo-helper'
 import { Collection } from 'mongodb'
 import mockDate from 'mockdate'
@@ -65,7 +65,7 @@ describe('Survey Mongo Repository', () => {
       const sut = makeSut()
       const survey = await makeInsertSurvey()
       const account = await makeInsertAccount()
-      const newSurvey = (): SaveSurveyResultModel => ({
+      const newSurvey = (): SaveSurveyResultParams => ({
         survey_id: survey.id,
         account_id: account.id,
         answer: survey.answers[0].answer,
@@ -80,7 +80,7 @@ describe('Survey Mongo Repository', () => {
       const sut = makeSut()
       const survey = await makeInsertSurvey()
       const account = await makeInsertAccount()
-      const newResultSurvey = (): SaveSurveyResultModel => ({
+      const newResultSurvey = (): SaveSurveyResultParams => ({
         survey_id: survey.id,
         account_id: account.id,
         answer: survey.answers[0].answer,
