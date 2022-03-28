@@ -19,7 +19,7 @@ const makeAccessToken = async (): Promise<string> => {
   return await Promise.resolve(accessToken)
 }
 
-const makeFakeSurvey = (): AddSurveyParams => {
+const mockSurveyModel = (): AddSurveyParams => {
   const survey: AddSurveyParams = {
     question: 'any_question',
     answers: [{
@@ -32,7 +32,7 @@ const makeFakeSurvey = (): AddSurveyParams => {
   return survey
 }
 const makeInsertSurvey = async (): Promise<void> => {
-  await surveyCollection.insertOne(makeFakeSurvey())
+  await surveyCollection.insertOne(mockSurveyModel())
 }
 
 describe('Survey Router', () => {
@@ -56,7 +56,7 @@ describe('Survey Router', () => {
     test('Should return 403 on add survey without accessToken', async () => {
       await request(app)
         .post('/api/surveys')
-        .send(makeFakeSurvey())
+        .send(mockSurveyModel())
         .expect(403)
     })
     test('Should return 204 on add survey with valid token', async () => {
@@ -64,7 +64,7 @@ describe('Survey Router', () => {
       await request(app)
         .post('/api/surveys')
         .set('x-access-token', accessToken)
-        .send(makeFakeSurvey())
+        .send(mockSurveyModel())
         .expect(204)
     })
   })

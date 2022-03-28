@@ -1,33 +1,16 @@
 import mockDate from 'mockdate'
-import { AddSurveyParams, AddSurveyRepository } from './db-add-survey-protocols'
+import { AddSurveyRepository } from './db-add-survey-protocols'
 import { DbAddSurvey } from './db-add-survey'
-
-const makeFakeSurveyData = (): AddSurveyParams => ({
-  question: 'any_question',
-  answers: [{
-    image: 'any_image',
-    answer: 'any_answer'
-  }],
-  created_at: new Date()
-})
+import { throwError, mockSurveyParam } from '@/domain/test'
+import { mockAddSurveyRepository } from '@/data/test'
 
 type SutTypes = {
   sut: DbAddSurvey
   addSurveyRepositoryStub: AddSurveyRepository
 }
 
-const makeAddSurveyRepositoryStub = (): AddSurveyRepository => {
-  class AddSurveyRepositoryStub implements AddSurveyRepository {
-    async add (SurveyData: AddSurveyParams): Promise<void> {
-      return await Promise.resolve()
-    }
-  }
-
-  return new AddSurveyRepositoryStub()
-}
-
 const makeSut = (): SutTypes => {
-  const addSurveyRepositoryStub = makeAddSurveyRepositoryStub()
+  const addSurveyRepositoryStub = mockAddSurveyRepository()
   const sut = new DbAddSurvey(addSurveyRepositoryStub)
   return { sut, addSurveyRepositoryStub }
 }
@@ -38,13 +21,13 @@ describe('DbAddSurvey UseCase', () => {
   test('Should calls AddSurveyRepository with correct values', async () => {
     const { sut, addSurveyRepositoryStub } = makeSut()
     const addSpy = jest.spyOn(addSurveyRepositoryStub, 'add')
-    await sut.add(makeFakeSurveyData())
-    expect(addSpy).toHaveBeenCalledWith(makeFakeSurveyData())
+    await sut.add(mockSurveyParam())
+    expect(addSpy).toHaveBeenCalledWith(mockSurveyParam())
   })
   test('Should throw if AddSurveyRepository throws', async () => {
     const { sut, addSurveyRepositoryStub } = makeSut()
-    jest.spyOn(addSurveyRepositoryStub, 'add').mockReturnValueOnce(Promise.reject(new Error()))
-    const promise = sut.add(makeFakeSurveyData())
+    jest.spyOn(addSurveyRepositoryStub, 'add').mockImplementationOnce(throwError)
+    const promise = sut.add(mockSurveyParam())
     expect(promise).rejects.toThrow(new Error())
   })
 })

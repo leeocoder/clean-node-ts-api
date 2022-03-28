@@ -19,7 +19,7 @@ const makeAccessToken = async (): Promise<string> => {
   return await Promise.resolve(accessToken)
 }
 
-const makeFakeSurvey = (): AddSurveyParams => {
+const mockSurveyModel = (): AddSurveyParams => {
   const survey: AddSurveyParams = {
     question: 'any_question',
     answers: [{
@@ -36,7 +36,7 @@ const makeFakeSurvey = (): AddSurveyParams => {
   return survey
 }
 const makeInsertSurvey = async (): Promise<any> => {
-  const insertedSurvey = await surveyCollection.insertOne(makeFakeSurvey())
+  const insertedSurvey = await surveyCollection.insertOne(mockSurveyModel())
   const survey = await surveyCollection.findOne({ _id: insertedSurvey.insertedId })
   return survey
 }
